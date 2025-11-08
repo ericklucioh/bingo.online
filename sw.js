@@ -1,4 +1,4 @@
-const CACHE_NAME = 'bingo-completo-v5';
+const CACHE_NAME = 'bingo-completo-v6';
 
 // Instala - AGORA cacheia TUDO incluindo JS
 self.addEventListener('install', event => {
@@ -41,13 +41,21 @@ self.addEventListener('activate', event => {
   );
 });
 
-// Fetch - AGORA cacheia JS também
+// Fetch - Estratégia: Network First
 self.addEventListener('fetch', event => {
   event.respondWith(
-    caches.match(event.request)
+    fetch(event.request)
       .then(response => {
-        // Retorna do cache ou faz fetch
-        return response || fetch(event.request);
+        // Se a rede funcionou, atualiza o cache
+        return caches.open(CACHE_NAME)
+          .then(cache => {
+            cache.put(event.request, response.clone());
+            return response;
+          });
+      })
+      .catch(() => {
+        // Se a rede falhou, tenta do cache
+        return caches.match(event.request);
       })
   );
 });
