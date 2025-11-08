@@ -1,0 +1,14 @@
+{
+  "name": "Bingo Online",
+  "short_name": "Bingo",
+  "description": "Jogo de Bingo online divertido e interativo",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4a90e2",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "pt-BR",
+  "categories": ["entertainment", "games"]
+   
+}
