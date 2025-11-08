@@ -41,8 +41,13 @@ self.addEventListener('activate', event => {
   );
 });
 
-// Fetch - Estratégia: Network First
+// Fetch - Estratégia: Network First COM FILTRO
 self.addEventListener('fetch', event => {
+  // ⚠️ FILTRO CRÍTICO: Ignora requisições que não são HTTP/HTTPS
+  if (!event.request.url.startsWith('http')) {
+    return; // Deixa a requisição passar sem interferência
+  }
+  
   event.respondWith(
     fetch(event.request)
       .then(response => {
