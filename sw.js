@@ -1,4 +1,4 @@
-const CACHE_NAME = 'bingo-completo-v4';
+const CACHE_NAME = 'bingo-completo-v5';
 
 // Instala - AGORA cacheia TUDO incluindo JS
 self.addEventListener('install', event => {
