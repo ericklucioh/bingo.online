@@ -1,6 +1,6 @@
-const CACHE_NAME = 'bingo-v3';
+const CACHE_NAME = 'bingo-completo-v1';
 
-// Instala - só cachear recursos não-JS
+// Instala - AGORA cacheia TUDO incluindo JS
 self.addEventListener('install', event => {
   console.log('SW instalando...');
   event.waitUntil(
@@ -10,7 +10,14 @@ self.addEventListener('install', event => {
           './',
           './index.html', 
           './css/main.css',
-          './manifest.json'
+          './manifest.json',
+          // AGORA ADICIONA OS JS - ordem de dependência
+          './js/regrasDeNegocio.js',
+          './js/funcional.js',
+          './js/naoFuncional.js', 
+          './js/main.js',
+          './js/body.js',
+          './js/pwa.js'
         ]);
       })
       .then(() => self.skipWaiting())
@@ -25,6 +32,7 @@ self.addEventListener('activate', event => {
       return Promise.all(
         cacheNames.map(cacheName => {
           if (cacheName !== CACHE_NAME) {
+            console.log('Deletando cache antigo:', cacheName);
             return caches.delete(cacheName);
           }
         })
@@ -33,16 +41,12 @@ self.addEventListener('activate', event => {
   );
 });
 
-// Fetch - passa todas as requisições JS diretamente
+// Fetch - AGORA cacheia JS também
 self.addEventListener('fetch', event => {
-  // Ignora completamente JS files
-  if (event.request.destination === 'script') {
-    return fetch(event.request);
-  }
-  
   event.respondWith(
     caches.match(event.request)
       .then(response => {
+        // Retorna do cache ou faz fetch
         return response || fetch(event.request);
       })
   );

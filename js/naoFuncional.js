@@ -1,16 +1,13 @@
-import * as main from './main.js'
-import * as funcional from './funcional.js'
-import * as regrasDeNegocio from './regrasDeNegocio.js'
-import * as body from './body.js'
-
-
-document.addEventListener( "keypress", function(e) {
-   if ( e.key === "Enter" ) {
-      main.newNumber();
+document.addEventListener("keypress", function(e) {
+   if (e.key === "Enter") {
+      window.main.newNumber(); // Mudei main para window.main
    }
 });
 
-export function confirmToClean() {
+// Encapsula funções não-funcionais em window.naoFuncional
+window.naoFuncional = window.naoFuncional || {};
+
+window.naoFuncional.confirmToClean = function() {
    document.getElementById("confirm").innerHTML = `
       <div id="clearWindow" class="centralized">
          Tem certeza?
@@ -21,74 +18,75 @@ export function confirmToClean() {
             Sim
          </button>
       </div>`;
-}
-window.confirmToClean = confirmToClean;
+};
 
-export function loadArrays() {
-   for (const arrayName of main.ArraysInString) {
+window.naoFuncional.loadArrays = function() {
+   for (const arrayName of window.main.ArraysInString) { // Mudei main para window.main
       const array = JSON.parse(localStorage.getItem(arrayName)) || [];
-      main.Arrays[arrayName] = array;
+      window.main.Arrays[arrayName] = array; // Mudei main para window.main
    }
-}
+};
 
-export function cleanRecentNumbers() {
+window.naoFuncional.cleanRecentNumbers = function() {
    for (let i = 0; i < 7; i++) {
-      document.getElementById(`recentNumber${i}`).innerHTML = "" ;
+      document.getElementById(`recentNumber${i}`).innerHTML = "";
    }
-}
+};
 
-export function printRecentNumbers() {
-   for ( let i = 0; i < 7; i++ ) {
-      if (main.Arrays['all'][i] > 0) {
-         document.getElementById(`recentNumber${i}`).innerHTML = main.Arrays['all'][i];
-      };
-   };
-}
+window.naoFuncional.printRecentNumbers = function() {
+   for (let i = 0; i < 7; i++) {
+      if (window.main.Arrays['all'][i] > 0) { // Mudei main para window.main
+         document.getElementById(`recentNumber${i}`).innerHTML = window.main.Arrays['all'][i]; // Mudei main para window.main
+      }
+   }
+};
 
-export function cleanCache(letter) {
+window.naoFuncional.cleanCache = function(letter) {
    localStorage.removeItem(letter);
    window[letter] = [];
-}
+};
 
-export function addLastValue(value) {
+window.naoFuncional.addLastValue = function(value) {
    const allNumbers = document.getElementById("allNumbers");
    const elements = allNumbers.querySelectorAll("div");
 
    elements.forEach(function(element) {
       const content = element.textContent.trim();
-      if ( content === value.toString() ) {
+      if (content === value.toString()) {
          element.classList.add("new-value");
       }
    });
-}
+};
 
-export function cleanLastValue() {
+window.naoFuncional.cleanLastValue = function() {
    var elementsWithNewClass = document.querySelectorAll(".new-value");
-   elementsWithNewClass.forEach(function (element) {
+   elementsWithNewClass.forEach(function(element) {
       element.classList.remove("new-value");
    });
-}
+};
 
-export function newlastValue() {
+window.naoFuncional.newlastValue = function() {
    let num = document.getElementById('recentNumber0');
    let value = num.textContent;
-   if( value > 0 ) {
-      addLastValue(value);
+   if (value > 0) {
+      window.naoFuncional.addLastValue(value); // Mudei para window.naoFuncional.addLastValue
    }
-}
+};
 
-export function cleanCollumn(arrayName) {
-   for( let i = 0; i < 15; i++ ) {
+window.naoFuncional.cleanCollumn = function(arrayName) {
+   for (let i = 0; i < 15; i++) {
       document.getElementById(`${arrayName}${i}`).innerHTML = "";
-   };
-}
+   }
+};
 
-export function printCollum(array, letterName) {
-   for( let i = 0; i < array.length; i++ ) {
+window.naoFuncional.printCollum = function(array, letterName) {
+   for (let i = 0; i < array.length; i++) {
       document.getElementById(`${letterName}${i}`).innerHTML = array[i];
-   };
-}
+   }
+};
 
-export function saveArrays(array,arrayName) {
+window.naoFuncional.saveArrays = function(array, arrayName) {
    localStorage.setItem(arrayName, JSON.stringify(array));
-} 
+};
+
+// Remove todas as linhas export
